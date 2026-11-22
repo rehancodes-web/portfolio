@@ -100,8 +100,8 @@
       role: 'Designer & developer',
       tag: 'The site you\'re on right now.',
       desc: 'A portfolio built as a working turntable. Pull a record out of the crate, drop it on the deck, and the narrator tells you the story behind the project.',
-      points: ['Drag-and-drop records with a custom cursor, tap-to-play on phones', 'Scratchable platter, tonearm and motor easing in plain JavaScript', 'Sound effects synthesised live with the Web Audio API, narration voiced with ElevenLabs'],
-      stack: ['HTML', 'CSS', 'JavaScript', 'Web Audio API', 'ElevenLabs', 'GitHub Pages'],
+      points: ['Drag-and-drop records with a custom cursor, tap-to-play on phones', 'Scratchable platter, tonearm and motor easing in plain JavaScript', 'Sound effects synthesised live with the Web Audio API, narration voiced in Indian English'],
+      stack: ['HTML', 'CSS', 'JavaScript', 'Web Audio API', 'GitHub Pages'],
       link: 'https://github.com/rehancodes-web/portfolio', linkText: 'See the code on GitHub',
       color: '#C9B8E8',
       art: 'radial-gradient(circle at 70% 40%, #0D0A12 0 26%, #C9B8E8 26.5% 29%, #0D0A12 29.5% 36%, transparent 36.5%), linear-gradient(160deg, #3B2A55, #1D1428)',
@@ -315,7 +315,7 @@
   }
   soundBtn.addEventListener('click', () => setSound(!Audio.enabled));
 
-  // ===== Narrator: each record tells its project's story (voice recorded with ElevenLabs) =====
+  // ===== Narrator: each record tells its project's story (voice recorded with Microsoft's Prabhat neural voice) =====
   const caption = $('#caption');
   const Narrator = (() => {
     let manifest = null, el = null, id = 'about', loadedId = null, speaking = false, onEndCb = null, cueIdx = -1;

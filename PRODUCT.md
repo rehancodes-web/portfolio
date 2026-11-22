@@ -29,7 +29,7 @@ Visitors browse projects, hear or read each project's story, then contact Rehan 
 ## Capabilities and Constraints
 
 - Projects (all real): Executive Board, PLAYYR, EatOnGo, HigherUp.AI, put1meet, Community Manager (web + iOS), Campus Paws, Polymath OS, and this portfolio.
-- Each project has a pre-recorded ElevenLabs narration (George voice) in `audio/`, with sentence timings in `audio/narration.json`. Regenerating costs ElevenLabs credits; the API key must never ship in the site.
+- Each project has a pre-recorded narration in an Indian English voice (Microsoft Prabhat neural, via edge-tts; regenerate with `py tools/revoice_edge.py`) in `audio/`, with sentence timings in `audio/narration.json`.
 - Services offered: websites, web apps and dashboards, automations, AI assistants and integrations, mobile apps, tech partner for founders. Quote only, no prices.
 - No server: the contact form opens the visitor's email app.
 
