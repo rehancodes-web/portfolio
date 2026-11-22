@@ -1,0 +1,211 @@
+{
+ "about": {
+  "duration": 24.1,
+  "cues": [
+   {
+    "t": 0.07,
+    "text": "You're listening to Rehan Nadaf."
+   },
+   {
+    "t": 1.95,
+    "text": "He's a Computer Science student at RV University in Bengaluru, Co-Founder and CTO of Executive Board, and CTO at Vergemount."
+   },
+   {
+    "t": 11.24,
+    "text": "He builds websites, apps, automations and AI tools for founders and small businesses."
+   },
+   {
+    "t": 17.6,
+    "text": "Every record in this crate is something he's built."
+   },
+   {
+    "t": 20.34,
+    "text": "Pick one, put it on the turntable, and I'll tell you its story."
+   }
+  ]
+ },
+ "eb": {
+  "duration": 37.24,
+  "cues": [
+   {
+    "t": 0.05,
+    "text": "This is Executive Board, or EB."
+   },
+   {
+    "t": 3.04,
+    "text": "Most small businesses can't afford a CFO, a CMO, a COO and a head of strategy."
+   },
+   {
+    "t": 9.53,
+    "text": "So EB gives founders all four, as AI."
+   },
+   {
+    "t": 13.06,
+    "text": "It reads the company's real books, lets the four executives debate the decision, and hands the founder one clear recommendation, with the risks spelled out."
+   },
+   {
+    "t": 22.19,
+    "text": "Underneath it is a full ERP, with accounting, GST invoicing and goals."
+   },
+   {
+    "t": 28.26,
+    "text": "Rehan built about eighty-five percent of the platform, and he leads its engineering as Co-Founder and CTO."
+   },
+   {
+    "t": 34.75,
+    "text": "It's live at executiveboard.in."
+   }
+  ]
+ },
+ "playyr": {
+  "duration": 22.06,
+  "cues": [
+   {
+    "t": 0.06,
+    "text": "This is PLAYYR."
+   },
+   {
+    "t": 1.13,
+    "text": "The idea is simple: your city is your playground."
+   },
+   {
+    "t": 4.77,
+    "text": "PLAYYR helps people find others to play with nearby, from football to esports."
+   },
+   {
+    "t": 10,
+    "text": "You can join local crews, sign up for tournaments, and keep a streak going with challenges."
+   },
+   {
+    "t": 15.5,
+    "text": "Rehan built it end to end as CTO at Vergemount, from the maps and team invites to the player profiles."
+   }
+  ]
+ },
+ "eatongo": {
+  "duration": 28,
+  "cues": [
+   {
+    "t": 0.05,
+    "text": "This is EatOnGo."
+   },
+   {
+    "t": 1.73,
+    "text": "Picture a student with ten minutes for lunch, stuck in a crowded canteen queue."
+   },
+   {
+    "t": 6.43,
+    "text": "With EatOnGo, they scan the outlet's QR code, order and pay from their phone, and collect their food with a token and a four-character code."
+   },
+   {
+    "t": 15.08,
+    "text": "Vendors get a live order queue and sales insights."
+   },
+   {
+    "t": 18.49,
+    "text": "Rehan's team, Code Larpers, won first place at the AIESEC Ideathon with this idea, then built it and placed fourth at the Hack4SDG hackathon."
+   }
+  ]
+ },
+ "higherup": {
+  "duration": 20.8,
+  "cues": [
+   {
+    "t": 0.05,
+    "text": "This is HigherUp.AI, a skills-first way to hire."
+   },
+   {
+    "t": 4.4,
+    "text": "Instead of judging people by a line on a résumé, it matches students and job seekers to roles based on what they can actually do."
+   },
+   {
+    "t": 11.83,
+    "text": "Candidates build a profile around proof of their skills, and companies find the people who fit."
+   },
+   {
+    "t": 17.51,
+    "text": "Rehan designed and built it, and it's live on the web."
+   }
+  ]
+ },
+ "put1meet": {
+  "duration": 18.76,
+  "cues": [
+   {
+    "t": 0.05,
+    "text": "This is put1meet."
+   },
+   {
+    "t": 2.06,
+    "text": "Bangalore is full of places most people never find: old ruins, quiet walks, hidden corners of the city."
+   },
+   {
+    "t": 9.38,
+    "text": "put1meet maps those spots by area, and lets you meet people heading to the same place."
+   },
+   {
+    "t": 14.9,
+    "text": "It's built around one rule: explore without making it worse."
+   }
+  ]
+ },
+ "community": {
+  "duration": 18.81,
+  "cues": [
+   {
+    "t": 0.05,
+    "text": "This is Community Manager."
+   },
+   {
+    "t": 2.06,
+    "text": "Running a housing society means chasing dues, sending invoices and keeping owners in the loop."
+   },
+   {
+    "t": 8.03,
+    "text": "Community Manager puts all of that in one portal, with monthly and yearly reports."
+   },
+   {
+    "t": 13.19,
+    "text": "There's also an iPhone app for admins and owners, built with React Native on the same backend."
+   }
+  ]
+ },
+ "campuspaws": {
+  "duration": 15.37,
+  "cues": [
+   {
+    "t": 0.06,
+    "text": "This is Campus Paws."
+   },
+   {
+    "t": 1.9,
+    "text": "There are dogs living all over Rehan's campus, and sometimes one gets hurt."
+   },
+   {
+    "t": 6.66,
+    "text": "Campus Paws lists every dog in the campus pack, and lets anyone report a dog in trouble with a photo and a short note, so help gets there faster."
+   }
+  ]
+ },
+ "polymath": {
+  "duration": 14.44,
+  "cues": [
+   {
+    "t": 0.06,
+    "text": "This is Polymath OS."
+   },
+   {
+    "t": 2.43,
+    "text": "It turns learning into a game."
+   },
+   {
+    "t": 4.37,
+    "text": "You pick skills from different fields, complete activities, and level up with challenges, streaks and achievements."
+   },
+   {
+    "t": 11.15,
+    "text": "It's built for people who want to be good at more than one thing."
+   }
+  ]
+ }
+}

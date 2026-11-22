@@ -188,6 +188,7 @@
         if (!music) return; music = false; clearInterval(timer); timer = null;
         try { crackleSrc && crackleSrc.stop(); } catch (e) {}
       },
+      connectElement(el) { init(); const src = ctx.createMediaElementSource(el); const g = ctx.createGain(); g.gain.value = 1.25; src.connect(g).connect(fxBus); },
       needle() { if (!ctx) return; const t = ctx.currentTime; const s = ctx.createBufferSource(); s.buffer = noiseBuffer(.25, true); const bp = ctx.createBiquadFilter(); bp.type = 'lowpass'; bp.frequency.value = 900; const g = ctx.createGain(); env(g, t, .002, .5, .2); s.connect(bp).connect(g).connect(fxBus); s.start(t); },
       scratch(vel) {
         if (!ctx || !enabled) return;
@@ -264,62 +265,38 @@
   }
   soundBtn.addEventListener('click', () => setSound(!Audio.enabled));
 
-  // ===== Narrator: the record "talks" about the project =====
-  const SCRIPTS = {
-    about: "You're listening to Rehan Nadaf. He's a Computer Science student at RV University in Bengaluru, and the Co-Founder and CTO of Executive Board. He builds websites, apps, automations and AI tools for founders and small businesses. Every record in this crate is something he's built. Pick one, put it on the turntable, and I'll tell you its story.",
-    eb: "This is Executive Board, or EB. Most small businesses can't afford a CFO, a CMO, a COO and a head of strategy. So EB gives founders all four, as AI. It reads the company's real books, lets the four executives debate the decision, and hands the founder one clear recommendation, with the risks spelled out. Underneath it is a full ERP, with accounting, GST invoicing and goals. Rehan built about eighty-five percent of the platform, and he leads its engineering as Co-Founder and CTO. It's live at executiveboard dot in.",
-    playyr: "This is PLAYYR. The idea is simple: your city is your playground. PLAYYR helps people find others to play with nearby, from football to esports. You can join local crews, sign up for tournaments, and keep a streak going with challenges. Rehan built it end to end as CTO at Vergemount, from the maps and team invites to the player profiles.",
-    eatongo: "This is EatOnGo. Picture a student with ten minutes for lunch, stuck in a crowded canteen queue. With EatOnGo, they scan the outlet's QR code, order and pay from their phone, and collect their food with a token and a four-character code. Vendors get a live order queue and sales insights. Rehan's team, Code Larpers, won first place at the AIESEC Ideathon with this idea, then built it and placed fourth at the Hack4SDG hackathon.",
-    higherup: "This is HigherUp dot A I, a skills-first way to hire. Instead of judging people by a line on a résumé, it matches students and job seekers to roles based on what they can actually do. Candidates build a profile around proof of their skills, and companies find the people who fit. Rehan designed and built it, and it's live on the web.",
-    put1meet: "This is put one meet. Bangalore is full of places most people never find: old ruins, quiet walks, hidden corners of the city. put one meet maps those spots by area, and lets you meet people heading to the same place. It's built around one rule: explore without making it worse.",
-    community: "This is Community Manager. Running a housing society means chasing dues, sending invoices and keeping owners in the loop. Community Manager puts all of that in one portal, with monthly and yearly reports. There's also an iPhone app for admins and owners, built with React Native on the same backend.",
-    campuspaws: "This is Campus Paws. There are dogs living all over Rehan's campus, and sometimes one gets hurt. Campus Paws lists every dog in the campus pack, and lets anyone report a dog in trouble with a photo and a short note, so help gets there faster.",
-    polymath: "This is Polymath OS. It turns learning into a game. You pick skills from different fields, complete activities, and level up with challenges, streaks and achievements. It's built for people who want to be good at more than one thing."
-  };
+  // ===== Narrator: each record tells its project's story (voice recorded with ElevenLabs) =====
   const caption = $('#caption');
   const Narrator = (() => {
-    const synth = window.speechSynthesis;
-    let voice = null, sentences = [], idx = 0, speaking = false, run = 0, fallbackTimer = null, scriptId = null;
-    const PREFER = [/Natural.*English \(India\)/i, /Natural.*English \((United Kingdom|United States)\)/i, /Google UK English Male/i, /Google UK English Female/i, /Google US English/i, /Daniel/i, /Samantha/i];
-    function pickVoice() {
-      if (!synth) return;
-      const vs = synth.getVoices().filter(v => /^en/i.test(v.lang));
-      for (const re of PREFER) { const v = vs.find(v => re.test(v.name)); if (v) { voice = v; return; } }
-      voice = vs.find(v => /en-(IN|GB)/i.test(v.lang)) || vs[0] || null;
-    }
-    if (synth) { pickVoice(); synth.addEventListener?.('voiceschanged', pickVoice); }
-    const split = t => t.match(/[^.!?]+[.!?]+(\s|$)/g).map(s => s.trim());
+    let manifest = null, el = null, id = 'about', loadedId = null, speaking = false, onEndCb = null, cueIdx = -1;
+    fetch('audio/narration.json').then(r => r.json()).then(m => { manifest = m; }).catch(() => {});
     const show = s => { caption.textContent = s; caption.classList.toggle('on', !!s); };
-    function sayNext(myRun, onEnd) {
-      if (myRun !== run) return;
-      if (idx >= sentences.length) { speaking = false; show(''); onEnd && onEnd(); return; }
-      const text = sentences[idx];
-      show(text);
-      const next = () => { if (myRun !== run) return; idx++; sayNext(myRun, onEnd); };
-      if (synth && Audio.enabled) {
-        const u = new SpeechSynthesisUtterance(text.replace(/PLAYYR/g, 'Player'));
-        if (voice) u.voice = voice;
-        u.rate = .98; u.pitch = 1; u.lang = voice ? voice.lang : 'en-GB';
-        u.onend = next; u.onerror = next;
-        synth.speak(u);
-      } else {
-        // muted or no speech support: captions still advance at reading pace
-        fallbackTimer = setTimeout(next, Math.max(1800, text.split(' ').length * 330));
-      }
+    function ensureEl() {
+      if (el) return el;
+      el = new window.Audio();
+      el.preload = 'auto';
+      el.addEventListener('ended', () => { speaking = false; show(''); cueIdx = -1; el.currentTime = 0; onEndCb && onEndCb(); });
+      Audio.connectElement(el); // route through the deck so the meter follows the voice and the sound toggle mutes it
+      return el;
     }
     return {
       get speaking() { return speaking; },
-      load(id) { if (id !== scriptId) { scriptId = id; sentences = split(SCRIPTS[id] || ''); idx = 0; } },
+      load(newId) { id = newId; },
       start(onEnd) {
-        run++; speaking = true;
-        if (idx >= sentences.length) idx = 0;
-        synth && synth.cancel();
-        sayNext(run, () => { idx = 0; onEnd && onEnd(); });
+        const a = ensureEl();
+        if (loadedId !== id) { a.src = `audio/${id}.mp3`; loadedId = id; cueIdx = -1; }
+        onEndCb = onEnd; speaking = true;
+        a.play().catch(() => { speaking = false; });
       },
-      stop() { run++; speaking = false; clearTimeout(fallbackTimer); synth && synth.cancel(); show(''); }
+      stop() { speaking = false; if (el) el.pause(); show(''); cueIdx = -1; },
+      tick() {
+        if (!speaking || !el || !manifest || !manifest[id]) return;
+        const cues = manifest[id].cues, t = el.currentTime + .08;
+        let i = cues.length - 1; while (i > 0 && cues[i].t > t) i--;
+        if (i !== cueIdx) { cueIdx = i; show(cues[i].text); }
+      }
     };
   })();
-  Narrator.load('about');
 
   function setPlaying(on) {
     if (on === playing) return;
@@ -549,15 +526,16 @@
       cursor.style.transform = `translate(${cur.x}px, ${cur.y}px)`;
     }
     stepGhost();
+    Narrator.tick();
     // meter
     const an = Audio.analyser;
-    if (playing && Narrator.speaking && !reduceMotion) {
+    if (an && playing) {
+      an.getByteFrequencyData(freq);
+      bars.forEach((b, i) => { b.style.height = `${2 + freq[Math.floor(i * 1.2) + 1] / 255 * 32}px`; });
+    } else if (playing && Narrator.speaking && !reduceMotion) {
       // speech-like meter: syllable bursts that rise and fall
       const env = Math.max(0, Math.sin(now / 95) * .5 + Math.sin(now / 41) * .35 + .35);
       bars.forEach((b, i) => { const shape = Math.exp(-Math.pow((i - BARS * .32) / (BARS * .28), 2)); b.style.height = `${2 + env * shape * 30 * (.75 + Math.random() * .5)}px`; });
-    } else if (an && playing) {
-      an.getByteFrequencyData(freq);
-      bars.forEach((b, i) => { b.style.height = `${2 + freq[Math.floor(i * 1.2) + 1] / 255 * 32}px`; });
     } else if (playing && !reduceMotion) {
       bars.forEach((b, i) => { b.style.height = `${3 + ((Math.sin(now / 180 + i * .55) + Math.sin(now / 110 + i * 1.1) + 2) / 4) * 22}px`; });
     } else bars.forEach(b => { b.style.height = '2px'; });
