@@ -56,8 +56,8 @@
       tag: 'Hidden spots around Bangalore, and people going there.',
       desc: 'Find public ruins, quiet walks and lesser-known places around the city, plan by side of town, and meet people heading to the same spot. Built with an "explore without making it worse" ethic.',
       points: ['Curated spots by area of the city', 'Accounts, follows, meet groups and direct messages', 'Community submissions for new spots'],
-      stack: ['JavaScript', 'Supabase', 'PostgreSQL', 'Vercel'],
-      link: '', color: '#3FA37A',
+      stack: ['JavaScript', 'Supabase', 'PostgreSQL', 'GitHub Pages'],
+      link: 'https://rehancodes-web.github.io/put1meet/put1meet/', linkText: 'Explore put1meet', color: '#3FA37A',
       art: 'repeating-radial-gradient(circle at 30% 70%, #2F8F67 0 10px, #3FA37A 10px 22px)',
       ink: '#F2FFF7', w: 90, key: 7, tempo: 80
     },
@@ -94,6 +94,18 @@
       link: '', color: '#2FB7C4',
       art: 'conic-gradient(#2FB7C4 0 25%, #12434A 0 50%, #2FB7C4 0 75%, #12434A 0) 0 0 / 50% 50%',
       ink: '#F0FEFF', w: 140, key: -5, tempo: 90
+    },
+    {
+      id: 'portfolio', name: 'This record player', short: 'Portfolio', year: '2026',
+      role: 'Designer & developer',
+      tag: 'The site you\'re on right now.',
+      desc: 'A portfolio built as a working turntable. Pull a record out of the crate, drop it on the deck, and the narrator tells you the story behind the project.',
+      points: ['Drag-and-drop records with a custom cursor, tap-to-play on phones', 'Scratchable platter, tonearm and motor easing in plain JavaScript', 'Sound effects synthesised live with the Web Audio API, narration voiced with ElevenLabs'],
+      stack: ['HTML', 'CSS', 'JavaScript', 'Web Audio API', 'ElevenLabs', 'GitHub Pages'],
+      link: 'https://github.com/rehancodes-web/portfolio', linkText: 'See the code on GitHub',
+      color: '#C9B8E8',
+      art: 'radial-gradient(circle at 70% 40%, #0D0A12 0 26%, #C9B8E8 26.5% 29%, #0D0A12 29.5% 36%, transparent 36.5%), linear-gradient(160deg, #3B2A55, #1D1428)',
+      ink: '#EFE6D6', w: 110, key: 0, tempo: 84
     }
   ];
 
@@ -233,6 +245,44 @@
         <span class="crec-sleeve"><span>${esc(p.name)}</span></span>
       </button>
     </li>`).join('');
+
+  // ===== Crate scrolling: wheel, arrows, track, keyboard =====
+  const cratePrev = $('#cratePrev'), crateNext = $('#crateNext'), crateTrack = $('#crateScroll'), crateThumb = $('#crateThumb');
+  $('#crateCount').textContent = `Crate no. 1, ${PROJECTS.length} records`;
+  const crateMax = () => Math.max(0, crateEl.scrollWidth - crateEl.clientWidth);
+  function updateCrateScroll() {
+    const max = crateMax(), x = crateEl.scrollLeft, frac = Math.min(1, crateEl.clientWidth / crateEl.scrollWidth);
+    crateTrack.hidden = max <= 2;
+    crateThumb.style.width = `${frac * 100}%`;
+    crateThumb.style.transform = `translateX(${max ? (x / max) * (1 / frac - 1) * 100 : 0}%)`;
+    cratePrev.classList.toggle('is-hidden', x < 4);
+    crateNext.classList.toggle('is-hidden', x > max - 4);
+    crateEl.classList.toggle('fade-l', x > 4);
+    crateEl.classList.toggle('fade-r', x < max - 4);
+  }
+  crateEl.addEventListener('scroll', updateCrateScroll, { passive: true });
+  window.addEventListener('resize', updateCrateScroll);
+  requestAnimationFrame(updateCrateScroll);
+  const flip = dir => crateEl.scrollBy({ left: dir * crateEl.clientWidth * .7, behavior: reduceMotion ? 'auto' : 'smooth' });
+  cratePrev.addEventListener('click', () => flip(-1));
+  crateNext.addEventListener('click', () => flip(1));
+  // a vertical mouse wheel flips through the crate, then lets the page scroll at either end
+  crateEl.addEventListener('wheel', e => {
+    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+    const max = crateMax(), x = crateEl.scrollLeft;
+    if ((e.deltaY < 0 && x <= 0) || (e.deltaY > 0 && x >= max - 1)) return;
+    e.preventDefault();
+    crateEl.scrollLeft = x + e.deltaY * 1.2;
+  }, { passive: false });
+  crateTrack.addEventListener('click', e => {
+    const r = crateTrack.getBoundingClientRect();
+    crateEl.scrollTo({ left: ((e.clientX - r.left) / r.width) * crateMax(), behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+  crateEl.addEventListener('keydown', e => {
+    const btn = e.target.closest('.crec-btn'); if (!btn || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return;
+    const li = btn.closest('.crec'), next = e.key === 'ArrowRight' ? li.nextElementSibling : li.previousElementSibling;
+    if (next) { e.preventDefault(); const b = $('.crec-btn', next); b.focus({ preventScroll: true }); next.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', inline: 'nearest', block: 'nearest' }); }
+  });
 
   // ===== Render back cover =====
   $('#tracks').innerHTML = SERVICES.map((s, i) => `
@@ -381,13 +431,17 @@
     record.classList.add('lifted');
     const t = deckTarget();
     g.k = .16; g.tx = t.x; g.ty = t.y; g.ts = t.s; g.tr = g.r + 120;
-    g.done = () => {
+    let landed = false;
+    const finish = () => {
+      if (landed) return; landed = true; g.done = null;
       setLabel(p); current = p; currentIndex = i; markCrate(i); showNotes(p); Narrator.load(p.id);
       record.classList.remove('lifted');
-      ghost.remove(); ghost = null; busy = false;
-      angle = 0;
+      if (ghost) { ghost.remove(); ghost = null; }
+      busy = false; angle = 0;
       setTimeout(() => setPlaying(true), wasPlaying ? 120 : 60);
     };
+    g.done = finish;
+    setTimeout(finish, 1400); // safety net if the browser throttles animation frames
   }
   function returnToCrate(i) {
     const disc = $(`.crec[data-i="${i}"] .crec-disc`), r = disc.getBoundingClientRect(), c = rectCentre(r);

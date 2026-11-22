@@ -207,5 +207,26 @@
     "text": "It's built for people who want to be good at more than one thing."
    }
   ]
+ },
+ "portfolio": {
+  "duration": 21.97,
+  "cues": [
+   {
+    "t": 0.05,
+    "text": "This is the record player you're using right now."
+   },
+   {
+    "t": 2.87,
+    "text": "Rehan built this site as a working turntable: pull a record out of the crate, drop it on the deck, and it tells you the story behind the project."
+   },
+   {
+    "t": 11.42,
+    "text": "The platter, the tonearm and the scratching are all plain JavaScript, and every sound effect is generated live in your browser."
+   },
+   {
+    "t": 18.97,
+    "text": "And the voice you're hearing was recorded with ElevenLabs."
+   }
+  ]
  }
 }

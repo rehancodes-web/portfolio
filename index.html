@@ -92,9 +92,12 @@
       <div class="crate-wrap">
         <p class="crate-hint" id="crateHint"><span class="hint-fine">Drag a record onto the turntable to play it.</span><span class="hint-touch">Tap a record to put it on the turntable.</span></p>
         <div class="crate" id="crate">
-          <div class="crate-front" aria-hidden="true"><span>Crate no. 1, Rehan Nadaf</span></div>
+          <button class="crate-arrow prev" id="cratePrev" type="button" aria-label="Flip back through the crate"><span aria-hidden="true">‹</span></button>
+          <button class="crate-arrow next" id="crateNext" type="button" aria-label="Flip forward through the crate"><span aria-hidden="true">›</span></button>
+          <div class="crate-front" aria-hidden="true"><span id="crateCount">Crate no. 1, Rehan Nadaf</span></div>
           <ul class="crate-records" id="crateRecords"></ul>
         </div>
+        <div class="crate-scroll" id="crateScroll" aria-hidden="true"><span id="crateThumb"></span></div>
       </div>
     </section>
 

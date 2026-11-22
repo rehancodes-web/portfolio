@@ -98,7 +98,25 @@ p { margin: 0; }
 .deck-col { grid-area: deck; min-width: 0; }
 .sleeve-notes { grid-area: notes; min-width: 0; padding-top: 8px; border-top: 1px solid var(--line); }
 .crate-wrap { grid-area: crate; min-width: 0; }
-.crate-records { mask-image: linear-gradient(90deg, #000 85%, transparent); }
+.crate-records { scroll-behavior: smooth; overscroll-behavior-x: contain; }
+.crate-records.fade-r { mask-image: linear-gradient(90deg, #000 88%, transparent); }
+.crate-records.fade-l { mask-image: linear-gradient(90deg, transparent, #000 12%); }
+.crate-records.fade-l.fade-r { mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+.crate-arrow {
+  position: absolute; z-index: 3; top: 34%; width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid rgba(239,230,214,.25); background: rgba(29,20,40,.88); color: var(--text);
+  font: 400 1.5rem/1 var(--serif); display: grid; place-items: center; cursor: pointer;
+  box-shadow: 0 8px 18px rgba(0,0,0,.45);
+  transition: opacity .3s var(--ease-out), transform .3s var(--ease-out), border-color .2s, color .2s;
+}
+.crate-arrow:hover { border-color: var(--brass); color: var(--brass); }
+.crate-arrow.prev { left: -14px; } .crate-arrow.next { right: -14px; }
+.crate-arrow.is-hidden { opacity: 0; pointer-events: none; transform: scale(.85); }
+.crate-arrow span { margin-top: -3px; }
+.crate-scroll { position: relative; height: 4px; margin-top: 30px; border-radius: 4px; background: rgba(239,230,214,.1); cursor: pointer; }
+.crate-scroll[hidden] { display: none; }
+.crate-scroll::before { content: ""; position: absolute; inset: -10px 0; }
+.crate-scroll span { position: absolute; left: 0; top: 0; height: 100%; border-radius: 4px; background: var(--brass); transition: transform .15s linear; }
 
 /* turntable */
 .deck { width: min(100%, 560px); }
