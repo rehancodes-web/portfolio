@@ -1,4 +1,4 @@
-﻿/* Rehan Nadaf, portfolio. Plain JavaScript; every sound is synthesised live with the Web Audio API. */
+/* Rehan Nadaf, portfolio. Plain JavaScript; every sound is synthesised live with the Web Audio API. */
 (() => {
   'use strict';
 
@@ -597,6 +597,12 @@
   }
   requestAnimationFrame(frame);
   showNotes(ABOUT);
+
+  // ===== Theme toggle =====
+  const themeBtn = $('#themeToggle');
+  const syncTheme = () => { const light = document.documentElement.dataset.theme === 'light'; themeBtn.setAttribute('aria-label', light ? 'Switch to dark theme' : 'Switch to light theme'); document.querySelector('meta[name=theme-color]').content = light ? '#E9E6DF' : '#1A1411'; };
+  themeBtn.addEventListener('click', () => { const t = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light'; document.documentElement.dataset.theme = t; try { localStorage.setItem('theme', t); } catch (e) {} syncTheme(); });
+  syncTheme();
 
   // ===== Request form =====
   const mailLink = $('#mailLink');
