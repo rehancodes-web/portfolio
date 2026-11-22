@@ -3,129 +3,163 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rehan Nadaf, websites, apps, automations and AI tools</title>
-  <meta name="description" content="Rehan Nadaf builds websites, web apps, automations and AI tools for founders and small businesses. Co-Founder & CTO at Executive Board, CTO at Vergemount.">
-  <meta name="theme-color" content="#F5C518">
+  <title>Rehan Nadaf, builder of websites, automations and AI tools</title>
+  <meta name="description" content="Rehan Nadaf builds websites, web apps, automations and AI tools for founders and businesses. Co-Founder & CTO at Executive Board.">
+  <meta name="theme-color" content="#1A1411">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=Bungee&family=Bungee+Shade&family=Noto+Sans+Kannada:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23F5C518'/%3E%3Cpath d='M18 46V18h14a9 9 0 0 1 0 18h-6l12 10' fill='none' stroke='%23D52B1E' stroke-width='6' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230D0A12'/%3E%3Ccircle cx='32' cy='32' r='11' fill='%23D9A441'/%3E%3Ccircle cx='32' cy='32' r='2' fill='%230D0A12'/%3E%3C/svg%3E">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
+  <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor-text" id="cursorText"></span></div>
 
-  <header class="bar">
-    <a class="bar-name" href="#top">Rehan Nadaf</a>
-    <nav class="bar-nav" aria-label="Sections">
-      <a href="#street">Work</a>
-      <a href="#rates">Services</a>
-      <a href="#order">Contact</a>
+  <header class="top">
+    <a class="brand" href="#top">Rehan Nadaf</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#station">Records</a>
+      <a href="#back">Services</a>
+      <a href="#request">Contact</a>
     </nav>
-    <button class="bar-sound" id="soundToggle" type="button" aria-pressed="true">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9h4l5-4v14l-5-4H4z"/><path class="wave" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="mute" d="M16 9l6 6M22 9l-6 6"/></svg>
-      <span id="soundLabel">Sound on</span>
+    <button class="sound" id="soundToggle" type="button" aria-pressed="false">
+      <span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="sound-label">Sound off</span>
     </button>
   </header>
 
   <main id="main">
-    <!-- Rehan's own shop -->
-    <section class="front" id="top" aria-labelledby="hero-title">
-      <div class="signboard">
-        <p class="sign-kn" lang="kn">ರೆಹಾನ್ ನದಾಫ್</p>
-        <h1 id="hero-title" class="sign-name">Rehan Nadaf</h1>
-        <p class="sign-trade">Websites<i class="sep" aria-hidden="true"></i>Apps<i class="sep" aria-hidden="true"></i>Automations<i class="sep" aria-hidden="true"></i>AI tools</p>
-        <p class="sign-addr">Bengaluru. Built for founders and small businesses.</p>
-      </div>
+    <section class="intro" id="top">
+      <h1>Rehan Nadaf</h1>
+      <p class="intro-line">I build websites, apps, automations and AI tools for companies, founders and anyone with an idea. Right now I'm Co-Founder &amp; CTO at <a href="https://executiveboard.in" target="_blank" rel="noopener">Executive Board</a> and CTO at Vergemount.</p>
+    </section>
 
-      <div class="shopfront" id="heroShop" data-id="about">
-        <div class="interior">
-          <div class="interior-copy">
-            <h2>Open for orders.</h2>
-            <p>I design and build the websites, apps, automations and AI tools a business actually runs on. Right now I'm Co-Founder &amp; CTO at <a href="https://executiveboard.in" target="_blank" rel="noopener">Executive Board</a> and CTO at Vergemount.</p>
-            <div class="interior-actions">
-              <a class="btn btn-red" href="#order">Request a build</a>
-              <a class="btn btn-line" href="#street">See the work</a>
+    <!-- The listening station: deck + notes + crate -->
+    <section class="station" id="station" aria-label="Projects, played as records">
+      <div class="deck-col">
+        <div class="deck" id="deck">
+          <div class="plinth">
+            <div class="platter" id="platter">
+              <div class="mat"></div>
+              <div class="record" id="record" role="button" tabindex="0" aria-label="Play or pause the record on the turntable">
+                <div class="grooves"></div>
+                <div class="sheen"></div>
+                <div class="label" id="recordLabel">
+                  <span class="label-top" id="labelTop">Rehan Nadaf</span>
+                  <span class="label-hole"></span>
+                  <span class="label-bottom" id="labelBottom">Side A</span>
+                </div>
+              </div>
+              <div class="drop-ring" aria-hidden="true"></div>
             </div>
+            <svg class="arm-svg" viewBox="0 0 118 100" aria-hidden="true">
+              <defs>
+                <linearGradient id="brassRod" x1="0" x2="1"><stop offset="0" stop-color="#8a6420"/><stop offset=".45" stop-color="#f3d184"/><stop offset="1" stop-color="#a97c2a"/></linearGradient>
+                <radialGradient id="brassBase" cx=".4" cy=".35"><stop offset="0" stop-color="#f6dc98"/><stop offset=".5" stop-color="#D9A441"/><stop offset="1" stop-color="#7d5a1c"/></radialGradient>
+              </defs>
+              <circle cx="103" cy="14" r="9.5" fill="#2a1a10" opacity=".55"/>
+              <g class="tonearm" id="tonearm">
+                <rect x="100.2" y="1" width="5.6" height="7" rx="1.4" fill="#2d2536"/>
+                <path d="M103 14 L103 60 L100.5 69" fill="none" stroke="url(#brassRod)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <g transform="rotate(16 100.5 69)">
+                  <rect x="97.6" y="67.5" width="6" height="10" rx="1.4" fill="#1c1622" stroke="#D9A441" stroke-width=".6"/>
+                  <rect x="99.9" y="76.6" width="1.4" height="2.2" fill="#c9c6cf"/>
+                </g>
+                <circle cx="103" cy="14" r="6.2" fill="url(#brassBase)"/>
+                <circle cx="103" cy="14" r="2" fill="#5a3f12"/>
+              </g>
+            </svg>
+            <button class="startstop" id="startStop" type="button" aria-label="Start the turntable"><span></span></button>
+            <div class="speed" aria-hidden="true"><span class="on">33</span><span>45</span></div>
+            <div class="pilot" aria-hidden="true"></div>
           </div>
-          <p class="radio" aria-live="off"><span class="radio-dot" aria-hidden="true"></span><span class="radio-text"></span></p>
         </div>
-        <button class="shutter" type="button" aria-expanded="false" aria-controls="heroShop">
-          <span class="shutter-label">Pull up to open the shop</span>
-          <span class="shutter-handle" aria-hidden="true"></span>
-        </button>
+        <div class="vu" id="vu" aria-hidden="true"></div>
+        <p class="caption" id="caption" aria-hidden="true"></p>
+      </div>
+
+      <article class="sleeve-notes" id="notes" aria-live="polite">
+        <p class="notes-kicker" id="notesKicker">On the deck</p>
+        <h2 id="notesTitle">Rehan Nadaf</h2>
+        <p class="notes-tag" id="notesTag">Builder of things people use.</p>
+        <p class="notes-desc" id="notesDesc">Pick a record from the crate below and drop it on the turntable. Each one is something I've built.</p>
+        <ul class="notes-points" id="notesPoints"></ul>
+        <ul class="chips" id="notesStack"></ul>
+        <p class="notes-link-wrap"><a class="notes-link" id="notesLink" target="_blank" rel="noopener" hidden>Visit the live site</a></p>
+      </article>
+
+      <div class="crate-wrap">
+        <p class="crate-hint" id="crateHint"><span class="hint-fine">Drag a record onto the turntable to play it.</span><span class="hint-touch">Tap a record to put it on the turntable.</span></p>
+        <div class="crate" id="crate">
+          <button class="crate-arrow prev" id="cratePrev" type="button" aria-label="Flip back through the crate"><span aria-hidden="true">‹</span></button>
+          <button class="crate-arrow next" id="crateNext" type="button" aria-label="Flip forward through the crate"><span aria-hidden="true">›</span></button>
+          <div class="crate-front" aria-hidden="true"><span id="crateCount">Crate no. 1, Rehan Nadaf</span></div>
+          <ul class="crate-records" id="crateRecords"></ul>
+        </div>
+        <div class="crate-scroll" id="crateScroll" aria-hidden="true"><span id="crateThumb"></span></div>
       </div>
     </section>
 
-    <!-- The street: one shop per project -->
-    <section class="street" id="street" aria-labelledby="street-title">
-      <div class="street-head">
-        <h2 id="street-title">Shops I've built</h2>
-        <p>Each one is a real product. Open a shutter and the shopkeeper tells you its story.</p>
-        <div class="street-arrows">
-          <button class="arrow" id="streetPrev" type="button" aria-label="Walk back down the street"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-          <button class="arrow" id="streetNext" type="button" aria-label="Walk further down the street"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    <!-- Album back cover: services, credits -->
+    <section class="back" id="back" aria-labelledby="back-title">
+      <div class="cover">
+        <div class="cover-head">
+          <h2 id="back-title">What I can build for you</h2>
+          <p class="cat">Cat. no. RN-2026</p>
         </div>
-      </div>
-      <ul class="shops" id="shops"></ul>
-      <div class="kerb" aria-hidden="true"><span id="kerbThumb"></span></div>
-    </section>
-
-    <!-- Rate board: services -->
-    <section class="rates" id="rates" aria-labelledby="rates-title">
-      <div class="rateboard">
-        <h2 id="rates-title">What I build</h2>
-        <p class="rates-note">Every job is quoted for your business. Tell me what you need.</p>
-        <ul class="rate-list" id="rateList"></ul>
-      </div>
-      <div class="wall">
-        <h2 class="wall-title">On the wall</h2>
-        <ul class="certs">
-          <li class="cert"><strong>1st place</strong><span>AIESEC Ideathon</span><em>with EatOnGo</em></li>
-          <li class="cert"><strong>4th place</strong><span>Hack4SDG, AIESEC in Bengaluru</span><em>with EatOnGo, team Code Larpers</em></li>
-          <li class="cert"><strong>Top 5</strong><span>SAP Hackathon</span></li>
-          <li class="cert"><strong>Top 5</strong><span>SAP Ideathon</span></li>
-        </ul>
-        <dl class="roles">
-          <div><dt>Co-Founder &amp; CTO, Executive Board</dt><dd>Since October 2026. Built about 85% of the app and website.</dd></div>
-          <div><dt>CTO, Vergemount</dt><dd>Since August 2026. Built PLAYYR end to end.</dd></div>
-          <div><dt>B.E. Computer Science and Engineering</dt><dd>RV University, Bengaluru.</dd></div>
-        </dl>
-        <p class="tools"><strong>Tools I work with:</strong> <span id="tools"></span></p>
+        <ol class="tracks" id="tracks"></ol>
+        <div class="cover-foot">
+          <div class="credits">
+            <h3>Credits</h3>
+            <dl>
+              <div><dt>Co-Founder &amp; CTO</dt><dd>Executive Board, since Oct 2026. Built about 85% of the app and website.</dd></div>
+              <div><dt>CTO</dt><dd>Vergemount, since Aug 2026. Built PLAYYR end to end.</dd></div>
+              <div><dt>Studying</dt><dd>B.E. Computer Science and Engineering, RV University, Bengaluru.</dd></div>
+            </dl>
+          </div>
+          <div class="credits">
+            <h3>Awards</h3>
+            <dl>
+              <div><dt>1st place</dt><dd>AIESEC Ideathon, with EatOnGo</dd></div>
+              <div><dt>4th place</dt><dd>Hack4SDG by AIESEC in Bengaluru, with EatOnGo</dd></div>
+              <div><dt>Top 5</dt><dd>SAP Hackathon</dd></div>
+              <div><dt>Top 5</dt><dd>SAP Ideathon</dd></div>
+            </dl>
+          </div>
+          <div class="credits">
+            <h3>Instruments</h3>
+            <p class="instruments" id="stack"></p>
+          </div>
+        </div>
+        <div class="barcode" aria-hidden="true"></div>
       </div>
     </section>
 
-    <!-- Order pad: contact -->
-    <section class="order" id="order" aria-labelledby="order-title">
-      <div class="order-copy">
-        <h2 id="order-title">Place an order</h2>
-        <p>Tell me what your business needs and when. I'll reply with a plan and a quote.</p>
-        <ul class="links">
-          <li><a id="mailLink" href="#">rehanzn2007@gmail.com</a></li>
-          <li><a href="https://www.linkedin.com/in/rehan-nadaf-0528a0364" target="_blank" rel="noopener">LinkedIn</a></li>
-          <li><a href="https://github.com/rehancodes-web" target="_blank" rel="noopener">GitHub</a></li>
-        </ul>
+    <section class="request" id="request" aria-labelledby="request-title">
+      <div class="request-copy">
+        <h2 id="request-title">Got something you want built?</h2>
+        <p>A website, a dashboard, an automation that saves your team hours, or an AI assistant that knows your business. Tell me what you need and I'll come back with a plan.</p>
+        <p class="links">
+          <a id="mailLink" href="#">Email</a>
+          <a href="https://www.linkedin.com/in/rehan-nadaf-0528a0364" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com/rehancodes-web" target="_blank" rel="noopener">GitHub</a>
+        </p>
       </div>
-      <form class="billbook" id="requestForm" novalidate data-impeccable-ignore="hard-offset-shadow">
-        <div class="bill-head">
-          <span class="bill-shop">Rehan Nadaf, Bengaluru</span>
-          <span class="bill-no">No. <b id="billNo">0001</b></span>
-        </div>
-        <label>Name<input name="name" type="text" autocomplete="name" required></label>
-        <label>Email<input name="email" type="email" autocomplete="email" required></label>
-        <label>Item<select name="service" id="serviceSelect"></select></label>
-        <label>Details<textarea name="message" rows="4" placeholder="What your business does, what you need, and by when." required></textarea></label>
+      <form class="form" id="requestForm" novalidate>
+        <label>Your name<input name="name" type="text" autocomplete="name" required></label>
+        <label>Your email<input name="email" type="email" autocomplete="email" required></label>
+        <label>What should I build?<select name="service" id="serviceSelect"></select></label>
+        <label>Tell me about it<textarea name="message" rows="5" placeholder="What your business does, what you need, and when." required></textarea></label>
         <p class="form-error" id="formError" role="alert"></p>
-        <div class="bill-foot">
-          <button class="btn btn-red" type="submit">Send order</button>
-          <span class="form-note">Opens your email app with the order filled in.</span>
-        </div>
+        <button class="btn" type="submit">Send request</button>
+        <p class="form-note">Opens your email app with everything filled in.</p>
       </form>
     </section>
   </main>
 
   <footer class="foot">
-    <p>Painted and wired by Rehan Nadaf in Bengaluru, 2026. Narration voiced with ElevenLabs.</p>
+    <p>Pressed in Bengaluru, 2026. Every sound here is generated in your browser.</p>
   </footer>
 
   <script src="app.js"></script>
