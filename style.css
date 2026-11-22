@@ -146,6 +146,13 @@ body.playing .pilot { background: #ff6b4a; box-shadow: 0 0 10px #ff6b4a; }
 .vu { display: flex; align-items: flex-end; gap: 3px; height: 34px; margin-top: 18px; width: min(100%, 560px); }
 .vu i { flex: 1; height: 2px; border-radius: 2px; background: rgba(239,230,214,.18); transition: height .1s linear, background .3s; }
 body.playing .vu i { background: var(--brass); }
+.caption {
+  width: min(100%, 560px); min-height: 3.2em; margin-top: 14px;
+  font: italic 400 clamp(1rem, .95rem + .25vw, 1.12rem)/1.45 var(--sans); color: var(--text);
+  opacity: 0; transform: translateY(4px); transition: opacity .35s var(--ease-out), transform .45s var(--ease-out);
+}
+.caption.on { opacity: 1; transform: none; }
+.caption::before { content: "\201C"; color: var(--brass); font: 400 1.6em/0 var(--serif); vertical-align: -.35em; margin-right: 4px; }
 
 /* notes beside the deck */
 .notes-kicker { color: var(--brass); font-weight: 600; font-size: .95rem; }
