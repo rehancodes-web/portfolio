@@ -1,11 +1,8 @@
-/* Rehan Nadaf, portfolio. No frameworks, no external audio: every sound is synthesised live. */
+﻿/* Rehan Nadaf, portfolio. Plain JavaScript; every sound is synthesised live with the Web Audio API. */
 (() => {
   'use strict';
 
-  // ===== Config =====
   const CONTACT_EMAIL = 'rehanzn2007@gmail.com';
-
-  // ===== Content =====
   const PROJECTS = [
     {
       id: 'eb', name: 'Executive Board', short: 'EB', year: '2026',
@@ -111,10 +108,7 @@
 
   const STACK = ['JavaScript', 'TypeScript', 'Next.js', 'React Native', 'Node.js', 'Python', 'HTML & CSS', 'PostgreSQL', 'Prisma', 'Supabase', 'Firebase', 'OpenAI API', 'Vercel', 'Cloudflare', 'Git & GitHub'];
 
-  // ===== Helpers =====
-  const $ = (s, el = document) => el.querySelector(s);
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
 
   // ===== Audio engine =====
   const Audio = (() => {
@@ -212,202 +206,316 @@
     };
   })();
 
+
+
+  const ABOUT = {
+    name: 'Start here', short: 'Rehan Nadaf', labelBottom: 'Side A',
+    kicker: 'On the deck', tag: 'Builder of things people use.',
+    desc: 'Pick a record from the crate below and put it on the turntable. Each one is something I\'ve built, from AI products to hackathon winners.',
+    points: [], stack: [], link: '', color: '#D9A441', key: 0, tempo: 84
+  };
+
+  // ===== Helpers =====
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const rectCentre = r => ({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+
   // ===== Render crate =====
-  const sleevesEl = $('#sleeves');
-  sleevesEl.innerHTML = PROJECTS.map((p, i) => `
-    <li class="sleeve-item">
-      <button class="sleeve" type="button" data-i="${i}" style="--art:${esc(p.art)};--c:${p.color};--ink:${p.ink};--w:${p.w}" aria-label="${esc(p.name)}: open liner notes">
-        <span class="sleeve-disc" aria-hidden="true"></span>
-        <span class="sleeve-cover">
-          <span class="sleeve-meta">${esc(p.year)}</span>
-          <span class="sleeve-name">${esc(p.name)}</span>
-        </span>
+  const crateEl = $('#crateRecords');
+  crateEl.innerHTML = PROJECTS.map((p, i) => `
+    <li class="crec" data-i="${i}">
+      <button class="crec-btn" type="button" data-i="${i}" style="--art:${esc(p.art)};--c:${p.color};--ink2:${p.ink}" aria-label="Put ${esc(p.name)} on the turntable">
+        <span class="crec-disc" aria-hidden="true"></span>
+        <span class="crec-sleeve"><span>${esc(p.name)}</span></span>
       </button>
-      <p class="sleeve-caption"><strong>${esc(p.role)}</strong>${esc(p.tag)}</p>
     </li>`).join('');
 
-  const scrollCrate = dir => sleevesEl.scrollBy({ left: dir * sleevesEl.clientWidth * .8, behavior: reduceMotion ? 'auto' : 'smooth' });
-  $('.crate-nav.prev').addEventListener('click', () => scrollCrate(-1));
-  $('.crate-nav.next').addEventListener('click', () => scrollCrate(1));
-
-  // ===== Render tracklist =====
-  const tracksEl = $('#tracks');
-  tracksEl.innerHTML = SERVICES.map((s, i) => `
-    <li class="track" data-i="${i}">
-      <button class="track-play" type="button" data-n="${i + 1}" aria-label="Play a preview for ${esc(s.name)}"></button>
-      <h3>${esc(s.name)}</h3>
-      <p class="track-desc">${esc(s.desc)}<em>${esc(s.ex)}</em></p>
-      <a class="btn btn-ghost track-ask" href="#request" data-service="${esc(s.name)}">Request this</a>
+  // ===== Render back cover =====
+  $('#tracks').innerHTML = SERVICES.map((s, i) => `
+    <li class="track">
+      <span class="track-no">${i + 1}</span>
+      <h3><span>${esc(s.name)}</span><button class="track-ask" type="button" data-i="${i}">Request this</button></h3>
+      <p>${esc(s.desc)} ${esc(s.ex)}.</p>
     </li>`).join('');
-
-  tracksEl.addEventListener('click', e => {
-    const play = e.target.closest('.track-play');
-    const ask = e.target.closest('.track-ask');
-    if (play) {
-      const li = play.closest('.track'), i = +li.dataset.i;
-      document.querySelectorAll('.track.is-playing').forEach(x => x.classList.remove('is-playing'));
-      li.classList.add('is-playing');
-      if (!Audio.enabled) setSound(true);
-      Audio.riff(i);
-      pulseEq();
-      setTimeout(() => li.classList.remove('is-playing'), 900);
-    }
-    if (ask) { $('#serviceSelect').value = ask.dataset.service; }
+  $('#stack').textContent = STACK.join(', ');
+  $('#serviceSelect').innerHTML = SERVICES.map(s => `<option>${esc(s.name)}</option>`).join('') + '<option>Something else</option>';
+  $('#tracks').addEventListener('click', e => {
+    const b = e.target.closest('.track-ask'); if (!b) return;
+    const i = +b.dataset.i;
+    $('#serviceSelect').value = SERVICES[i].name;
+    Audio.riff(i);
+    $('#request').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+    setTimeout(() => $('#requestForm [name=name]').focus({ preventScroll: true }), 600);
   });
 
-  $('#stack').innerHTML = STACK.map(s => `<li>${esc(s)}</li>`).join('');
-  $('#serviceSelect').innerHTML = SERVICES.map(s => `<option>${esc(s.name)}</option>`).join('') + '<option>Something else</option>';
-
   // ===== Deck state =====
-  const body = document.body, record = $('#record'), labelEl = $('#recordLabel');
-  const nowEl = $('#nowPlaying'), dropBtn = $('#dropNeedle');
-  let playing = false, current = null, angle = 0, speed = 0, dragging = false;
-  const RPM_DEG = reduceMotion ? 40 : 200; // degrees per second at full speed
+  const body = document.body, record = $('#record'), platter = $('#platter');
+  let playing = false, current = ABOUT, currentIndex = -1, angle = 0, speed = 0, scratching = false, busy = false;
+  const FULL = reduceMotion ? 40 : 200; // deg per second
 
-  function setPlaying(on) {
-    playing = on;
-    body.classList.toggle('playing', on);
-    dropBtn.classList.toggle('is-on', on);
-    $('.btn-text', dropBtn).textContent = on ? 'Lift the needle' : 'Drop the needle';
-    if (on) {
-      if (!Audio.enabled) setSound(true);
-      setTimeout(() => { Audio.needle(); Audio.play(); }, reduceMotion ? 0 : 650);
-    } else Audio.stop();
-    updateNow();
-  }
-  function updateNow() {
-    const name = current ? current.name : 'Rehan Nadaf, Side A';
-    nowEl.textContent = (playing ? 'Now playing: ' : 'Now on the deck: ') + name;
-  }
-  function loadRecord(p) {
-    current = p;
-    record.style.setProperty('--label', p.color);
-    $('#labelTop').textContent = p.short;
-    $('#labelBottom').textContent = p.role.split(',')[0];
-    record.setAttribute('aria-label', `Record: ${p.name}. Press to play or pause`);
-    Audio.setTrack(p);
-    updateNow();
-  }
-
-  // Sound toggle
   const soundBtn = $('#soundToggle');
   function setSound(on) {
     Audio.setEnabled(on);
     soundBtn.setAttribute('aria-pressed', String(on));
-    soundBtn.setAttribute('aria-label', on ? 'Sound on. Turn sound off' : 'Sound off. Turn sound on');
     $('.sound-label', soundBtn).textContent = on ? 'Sound on' : 'Sound off';
   }
   soundBtn.addEventListener('click', () => setSound(!Audio.enabled));
-  dropBtn.addEventListener('click', () => setPlaying(!playing));
 
-  // ===== Record: spin, tap, scratch =====
-  let lastPointerAngle = 0, lastMoveTime = 0, moved = 0, pointerId = null, lastScratch = 0;
-  const centre = () => { const r = record.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; };
-  const pAngle = e => { const c = centre(); return Math.atan2(e.clientY - c.y, e.clientX - c.x) * 180 / Math.PI; };
+  function setPlaying(on) {
+    if (on === playing) return;
+    playing = on;
+    body.classList.toggle('playing', on);
+    $('#startStop').setAttribute('aria-label', on ? 'Stop the turntable' : 'Start the turntable');
+    if (on) {
+      if (!Audio.enabled) setSound(true);
+      setTimeout(() => { if (playing) { Audio.needle(); Audio.play(); } }, reduceMotion ? 0 : 1000);
+    } else Audio.stop();
+  }
+  $('#startStop').addEventListener('click', () => setPlaying(!playing));
 
+  // notes panel
+  const notes = $('#notes');
+  function showNotes(p) {
+    notes.classList.add('swap');
+    setTimeout(() => {
+      $('#notesKicker').textContent = p === ABOUT ? 'On the deck' : p.role;
+      $('#notesTitle').textContent = p.name;
+      $('#notesTag').textContent = p.tag;
+      $('#notesDesc').textContent = p.desc;
+      $('#notesPoints').innerHTML = (p.points || []).map(x => `<li>${esc(x)}</li>`).join('');
+      $('#notesStack').innerHTML = (p.stack || []).map(x => `<li>${esc(x)}</li>`).join('');
+      const a = $('#notesLink');
+      if (p.link) { a.hidden = false; a.href = p.link; a.textContent = p.linkText || 'Visit the live site'; } else a.hidden = true;
+      notes.classList.remove('swap');
+    }, reduceMotion ? 0 : 260);
+  }
+
+  function setLabel(p) {
+    record.style.setProperty('--label', p.color);
+    $('#labelTop').textContent = p.short;
+    $('#labelBottom').textContent = p.labelBottom || p.year;
+    Audio.setTrack(p);
+  }
+
+  function markCrate(i) {
+    $$('.crec').forEach(li => li.classList.toggle('on-deck', +li.dataset.i === i));
+  }
+
+  // ===== The record you carry (ghost) =====
+  let ghost = null;
+  const g = { x: 0, y: 0, s: 0, r: 0, tx: 0, ty: 0, ts: 0, tr: 0, k: .22, done: null };
+  function makeGhost(fromRect, color) {
+    ghost = document.createElement('div');
+    ghost.className = 'ghost';
+    ghost.style.setProperty('--c', color);
+    ghost.style.width = ghost.style.height = '100px';
+    document.body.appendChild(ghost);
+    const c = rectCentre(fromRect);
+    g.x = g.tx = c.x; g.y = g.ty = c.y; g.s = g.ts = fromRect.width / 100; g.r = g.tr = 0; g.done = null;
+  }
+  function stepGhost() {
+    if (!ghost) return;
+    const k = reduceMotion ? 1 : g.k;
+    g.x = lerp(g.x, g.tx, k); g.y = lerp(g.y, g.ty, k); g.s = lerp(g.s, g.ts, k); g.r = lerp(g.r, g.tr, k * .6);
+    ghost.style.transform = `translate(${g.x - 50}px, ${g.y - 50}px) scale(${g.s}) rotate(${g.r}deg)`;
+    if (g.done && Math.abs(g.x - g.tx) < .6 && Math.abs(g.y - g.ty) < .6 && Math.abs(g.s - g.ts) < .004) {
+      const cb = g.done; g.done = null; cb();
+    }
+  }
+  function deckTarget() {
+    const r = record.getBoundingClientRect();
+    return { ...rectCentre(r), s: r.width / 100 };
+  }
+  function overDeck(x, y) {
+    const r = platter.getBoundingClientRect(), c = rectCentre(r);
+    return Math.hypot(x - c.x, y - c.y) < r.width * .62;
+  }
+
+  // Load a crate record onto the deck. Starts from the ghost's current position.
+  function landOnDeck(i) {
+    const p = PROJECTS[i];
+    busy = true;
+    const wasPlaying = playing;
+    setPlaying(false);
+    record.classList.add('lifted');
+    const t = deckTarget();
+    g.k = .16; g.tx = t.x; g.ty = t.y; g.ts = t.s; g.tr = g.r + 120;
+    g.done = () => {
+      setLabel(p); current = p; currentIndex = i; markCrate(i); showNotes(p);
+      record.classList.remove('lifted');
+      ghost.remove(); ghost = null; busy = false;
+      angle = 0;
+      setTimeout(() => setPlaying(true), wasPlaying ? 120 : 60);
+    };
+  }
+  function returnToCrate(i) {
+    const disc = $(`.crec[data-i="${i}"] .crec-disc`), r = disc.getBoundingClientRect(), c = rectCentre(r);
+    g.k = .2; g.tx = c.x; g.ty = c.y; g.ts = r.width / 100; g.tr = 0;
+    g.done = () => { ghost.remove(); ghost = null; busy = false; $(`.crec[data-i="${i}"]`).classList.remove('carrying'); };
+  }
+
+  // Crate pointer handling: drag with mouse/pen, tap anywhere
+  let press = null;
+  crateEl.addEventListener('pointerdown', e => {
+    const btn = e.target.closest('.crec-btn'); if (!btn || busy) return;
+    press = { i: +btn.dataset.i, x: e.clientX, y: e.clientY, id: e.pointerId, type: e.pointerType, btn, dragging: false, lx: e.clientX, lt: performance.now() };
+  });
+  window.addEventListener('pointermove', e => {
+    if (!press || e.pointerId !== press.id) return;
+    const dist = Math.hypot(e.clientX - press.x, e.clientY - press.y);
+    if (!press.dragging) {
+      if (press.type === 'touch') return; // touch scrolls the crate; a tap still loads the record
+      if (dist < 6) return;
+      press.dragging = true;
+      const disc = $('.crec-disc', press.btn);
+      makeGhost(disc.getBoundingClientRect(), PROJECTS[press.i].color);
+      disc.style.visibility = 'hidden';
+      press.btn.setPointerCapture?.(e.pointerId);
+      body.classList.add('dragging');
+      cursor.classList.add('holding'); cursor.classList.remove('big');
+      if (!Audio.enabled && Audio.ready) {} // stay silent until the visitor asks for sound
+    }
+    const now = performance.now(), vx = (e.clientX - press.lx) / Math.max(1, now - press.lt);
+    press.lx = e.clientX; press.lt = now;
+    g.k = .28; g.tx = e.clientX; g.ty = e.clientY;
+    const over = overDeck(e.clientX, e.clientY);
+    body.classList.toggle('over-deck', over);
+    g.ts = over ? deckTarget().s * .92 : 1.45;
+    g.tr = Math.max(-25, Math.min(25, vx * 18));
+  });
+  window.addEventListener('pointerup', e => {
+    if (!press || e.pointerId !== press.id) return;
+    const p = press; press = null;
+    body.classList.remove('dragging');
+    cursor.classList.remove('holding');
+    const disc = $('.crec-disc', p.btn);
+    if (p.dragging) {
+      const over = body.classList.contains('over-deck');
+      body.classList.remove('over-deck');
+      busy = true;
+      if (over) { disc.style.visibility = ''; landOnDeck(p.i); }
+      else { returnToCrate(p.i); const restore = () => { disc.style.visibility = ''; }; const prev = g.done; g.done = () => { prev && prev(); restore(); }; }
+      p.btn.dataset.justDragged = '1';
+      setTimeout(() => delete p.btn.dataset.justDragged, 50);
+    }
+  });
+  window.addEventListener('pointercancel', () => { press = null; body.classList.remove('dragging', 'over-deck'); });
+
+  crateEl.addEventListener('click', e => {
+    const btn = e.target.closest('.crec-btn'); if (!btn || busy || btn.dataset.justDragged) return;
+    flyToDeck(+btn.dataset.i);
+  });
+
+  function flyToDeck(i) {
+    if (i === currentIndex) { setPlaying(!playing); return; }
+    const go = () => {
+      const disc = $(`.crec[data-i="${i}"] .crec-disc`);
+      makeGhost(disc.getBoundingClientRect(), PROJECTS[i].color);
+      g.ts = g.s * 1.25; // a little lift before it flies
+      setTimeout(() => landOnDeck(i), reduceMotion ? 0 : 90);
+    };
+    const r = platter.getBoundingClientRect();
+    if (r.top < 60 || r.bottom > window.innerHeight) {
+      $('#deck').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+      setTimeout(go, reduceMotion ? 0 : 450);
+    } else go();
+  }
+
+  // ===== Record on the deck: tap to play, drag to scratch =====
+  let lastA = 0, moved = 0, rid = null, lastScratch = 0, lastT = 0;
+  const pAngle = e => { const c = rectCentre(record.getBoundingClientRect()); return Math.atan2(e.clientY - c.y, e.clientX - c.x) * 180 / Math.PI; };
   record.addEventListener('pointerdown', e => {
-    dragging = true; moved = 0; pointerId = e.pointerId; record.setPointerCapture(e.pointerId);
-    lastPointerAngle = pAngle(e); lastMoveTime = performance.now();
-    $('#deckHint').textContent = 'Scratching. Let go to keep playing.';
+    if (busy) return;
+    scratching = true; moved = 0; rid = e.pointerId; record.setPointerCapture(e.pointerId);
+    lastA = pAngle(e); lastT = performance.now();
   });
   record.addEventListener('pointermove', e => {
-    if (!dragging || e.pointerId !== pointerId) return;
-    const a = pAngle(e); let d = a - lastPointerAngle; if (d > 180) d -= 360; if (d < -180) d += 360;
-    lastPointerAngle = a; angle += d; moved += Math.abs(d);
-    const now = performance.now(), dt = Math.max(1, now - lastMoveTime); lastMoveTime = now;
-    const vel = d / dt * 1000; // deg/s
+    if (!scratching || e.pointerId !== rid) return;
+    const a = pAngle(e); let d = a - lastA; if (d > 180) d -= 360; if (d < -180) d += 360;
+    lastA = a; angle += d; moved += Math.abs(d);
+    const now = performance.now(), vel = d / Math.max(1, now - lastT) * 1000; lastT = now;
     if (Math.abs(d) > 2 && now - lastScratch > 45) { Audio.scratch(vel / 10); lastScratch = now; }
   });
-  const endDrag = e => {
-    if (!dragging) return; dragging = false;
+  const endScratch = e => {
+    if (!scratching) return; scratching = false;
     try { record.releasePointerCapture(e.pointerId); } catch (_) {}
-    $('#deckHint').textContent = 'Tap the record or drag it to scratch.';
     if (moved < 6) setPlaying(!playing);
   };
-  record.addEventListener('pointerup', endDrag);
-  record.addEventListener('pointercancel', endDrag);
+  record.addEventListener('pointerup', endScratch);
+  record.addEventListener('pointercancel', endScratch);
   record.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setPlaying(!playing); } });
 
+  // ===== Custom cursor =====
+  const cursor = $('#cursor'), cursorText = $('#cursorText');
+  const cur = { x: -100, y: -100, tx: -100, ty: -100 };
+  if (finePointer) {
+    const station = $('#station');
+    window.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse') return;
+      cur.tx = e.clientX; cur.ty = e.clientY;
+      const inStation = station.contains(e.target) || !!press;
+      cursor.classList.toggle('on', inStation);
+      if (press && press.dragging) return;
+      let label = '';
+      if (e.target.closest('.crec-btn')) label = +e.target.closest('.crec-btn').dataset.i === currentIndex ? (playing ? 'Pause' : 'Play') : 'Drag';
+      else if (e.target.closest('#record')) label = playing ? 'Scratch' : 'Play';
+      cursor.classList.toggle('big', !!label);
+      if (label) cursorText.textContent = label;
+    });
+    document.addEventListener('pointerleave', () => cursor.classList.remove('on'));
+  }
+
+  // ===== VU meter =====
+  const vu = $('#vu'), BARS = 40;
+  vu.innerHTML = '<i></i>'.repeat(BARS);
+  const bars = [...vu.children], freq = new Uint8Array(64);
+
+  // ===== Main loop =====
   let last = performance.now();
   function frame(now) {
     const dt = Math.min(.05, (now - last) / 1000); last = now;
-    const target = playing ? RPM_DEG : 0;
-    speed += (target - speed) * Math.min(1, dt * (playing ? 1.6 : 2.4));
-    if (!dragging) angle += speed * dt;
+    // platter: ease up and down like a real motor
+    const target = playing ? FULL : 0;
+    speed += (target - speed) * Math.min(1, dt * (playing ? 1.3 : 2));
+    if (!scratching) angle += speed * dt;
     record.style.transform = `rotate(${angle}deg)`;
-    drawEq(now);
+    // cursor follows with a little lag
+    if (finePointer) {
+      cur.x = lerp(cur.x, cur.tx, .3); cur.y = lerp(cur.y, cur.ty, .3);
+      cursor.style.transform = `translate(${cur.x}px, ${cur.y}px)`;
+    }
+    stepGhost();
+    // meter
+    const an = Audio.analyser;
+    if (an && playing) {
+      an.getByteFrequencyData(freq);
+      bars.forEach((b, i) => { b.style.height = `${2 + freq[Math.floor(i * 1.2) + 1] / 255 * 32}px`; });
+    } else if (playing && !reduceMotion) {
+      bars.forEach((b, i) => { b.style.height = `${3 + ((Math.sin(now / 180 + i * .55) + Math.sin(now / 110 + i * 1.1) + 2) / 4) * 22}px`; });
+    } else bars.forEach(b => { b.style.height = '2px'; });
     requestAnimationFrame(frame);
   }
-
-  // ===== EQ bars =====
-  const eqEl = $('#eq'), BARS = 28;
-  eqEl.innerHTML = '<i></i>'.repeat(BARS);
-  const bars = [...eqEl.children], freq = new Uint8Array(64);
-  let pulseUntil = 0;
-  const pulseEq = () => { pulseUntil = performance.now() + 700; };
-  function drawEq(now) {
-    const an = Audio.analyser;
-    if (an && (playing || now < pulseUntil)) {
-      an.getByteFrequencyData(freq);
-      bars.forEach((b, i) => { const v = freq[Math.floor(i * 1.6) + 1] / 255; b.style.height = `${3 + v * 43}px`; });
-    } else if (playing && !reduceMotion) {
-      bars.forEach((b, i) => { const v = (Math.sin(now / 160 + i * .7) + Math.sin(now / 97 + i * 1.3) + 2) / 4; b.style.height = `${4 + v * 30}px`; });
-    } else bars.forEach(b => { b.style.height = '3px'; });
-  }
   requestAnimationFrame(frame);
+  showNotes(ABOUT);
 
-  // ===== Liner notes dialog =====
-  const dlg = $('#notes');
-  let openIndex = 0;
-  sleevesEl.addEventListener('click', e => {
-    const s = e.target.closest('.sleeve'); if (!s) return;
-    openNotes(+s.dataset.i);
-  });
-  function openNotes(i) {
-    openIndex = i; const p = PROJECTS[i];
-    const sleeve = $('#notesSleeve');
-    sleeve.style.cssText = `--art:${p.art};--ink:${p.ink};--w:${p.w}`;
-    sleeve.innerHTML = `<span>${esc(p.name)}</span>`;
-    $('#notesDisc').style.setProperty('--c', p.color);
-    $('#notesRole').textContent = p.role;
-    $('#notesTitle').textContent = p.name;
-    $('#notesTag').textContent = p.tag;
-    $('#notesDesc').textContent = p.desc;
-    $('#notesPoints').innerHTML = p.points.map(x => `<li>${esc(x)}</li>`).join('');
-    $('#notesStack').innerHTML = p.stack.map(x => `<li>${esc(x)}</li>`).join('');
-    const link = $('#notesLink');
-    if (p.link) { link.hidden = false; link.href = p.link; link.textContent = p.linkText || 'Visit live site'; }
-    else link.hidden = true;
-    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
-    Audio.riff(i);
-  }
-  $('#notesClose').addEventListener('click', () => dlg.close());
-  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
-  $('#notesPlay').addEventListener('click', () => {
-    const p = PROJECTS[openIndex];
-    dlg.close();
-    const wasPlaying = playing;
-    if (wasPlaying) setPlaying(false);
-    loadRecord(p);
-    $('#top').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
-    setTimeout(() => setPlaying(true), wasPlaying ? 500 : 300);
-  });
-
-  // ===== Request form (opens the visitor's email app) =====
+  // ===== Request form =====
   const mailLink = $('#mailLink');
-  if (CONTACT_EMAIL) mailLink.href = `mailto:${CONTACT_EMAIL}`;
-  else mailLink.closest('li').hidden = true;
-
+  if (CONTACT_EMAIL) mailLink.href = `mailto:${CONTACT_EMAIL}`; else mailLink.hidden = true;
   $('#requestForm').addEventListener('submit', e => {
     e.preventDefault();
     const f = e.target, err = $('#formError');
     const name = f.name.value.trim(), email = f.email.value.trim(), service = f.service.value, msg = f.message.value.trim();
     if (!name || !email || !msg) { err.textContent = 'Add your name, email and a short description so I can reply.'; return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'That email address looks incomplete. Check it and try again.'; return; }
-    if (!CONTACT_EMAIL) { err.textContent = 'The contact email isn\'t set up yet. Reach me on LinkedIn for now.'; return; }
+    if (!CONTACT_EMAIL) { err.textContent = 'Email isn\'t set up yet. Reach me on LinkedIn for now.'; return; }
     err.textContent = '';
     const subject = `Build request: ${service}`;
-    const bodyText = `Hi Rehan,\n\n${msg}\n\nName: ${name}\nEmail: ${email}\nService: ${service}`;
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+    const text = `Hi Rehan,\n\n${msg}\n\nName: ${name}\nEmail: ${email}\nService: ${service}`;
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
   });
 })();
+
