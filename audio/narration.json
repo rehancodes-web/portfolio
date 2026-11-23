@@ -108,23 +108,27 @@
   ]
  },
  "higherup": {
-  "duration": 26.36,
+  "duration": 53.14,
   "cues": [
    {
     "t": 0.1,
-    "text": "This is HigherUp.AI, a skills-first way to hire."
+    "text": "This is HigherUp.AI, and it took Rehan's team to the Top 5 at SAP Hackfest 2026 and at the SAP Ideathon at RV University."
    },
    {
-    "t": 4.94,
-    "text": "Instead of judging people by a line on a résumé, it matches students and job seekers to roles based on what they can actually do."
+    "t": 10.24,
+    "text": "Most hiring asks where you studied. HigherUp asks what you can prove."
    },
    {
-    "t": 14.57,
-    "text": "Candidates build a profile around proof of their skills, and companies find the people who fit."
+    "t": 16.02,
+    "text": "An AI agent turns real evidence, like projects, internships and hackathons, into a Skill Passport, and every job match shows a fit percentage with the proof behind it."
    },
    {
-    "t": 21.66,
-    "text": "Rehan designed and built it, and it's live on the web."
+    "t": 30.01,
+    "text": "Recruiters choose what goes on a one-page summary, shortlist with a swipe, and candidates book interviews straight from their chat."
+   },
+   {
+    "t": 40.99,
+    "text": "Gender, age, caste and college name carry zero weight, and people make every decision. It runs on SAP HANA Cloud, and it's live on the web."
    }
   ]
  },
