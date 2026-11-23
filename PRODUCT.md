@@ -40,7 +40,7 @@ Visitors browse projects, hear or read each project's story, then contact Rehan 
 
 ## Evidence on Hand
 
-- Awards: 1st place AIESEC Ideathon (EatOnGo); 4th place Hack4SDG by AIESEC in Bengaluru (EatOnGo, team Code Larpers); Top 5 SAP Hackathon; Top 5 SAP Ideathon.
+- Awards: 1st place AIESEC Ideathon (EatOnGo); 4th place at Hack4SDG, a national-level hackathon by AIESEC (EatOnGo, team Code Larpers); Top 5 at SAP Hackfest 2026, National Hackathon (HigherUp.AI); Top 5 at the SAP Ideathon at RV University (HigherUp.AI).
 - Live links: executiveboard.in, rehancodes-web.github.io/eatongo/, rehancodes-web.github.io/HigherUp.AI/, rehancodes-web.github.io/put1meet/put1meet/, rehancodes-web.github.io/cie3webtech/.
 - No client testimonials, client logos, user metrics or prices exist. Do not invent them.
 

@@ -28,7 +28,7 @@
     },
     {
       id: 'eatongo', name: 'EatOnGo', short: 'EatOnGo', year: '2026',
-      role: 'Team Code Larpers, 1st at AIESEC Ideathon, 4th at Hack4SDG',
+      role: 'Team Code Larpers, 1st at AIESEC Ideathon, 4th at Hack4SDG, a national-level hackathon by AIESEC',
       tag: 'QR ordering and verified pickup for busy canteens.',
       desc: 'A student has ten minutes for lunch and the counter is packed. With EatOnGo they scan the outlet QR, order and pay from their phone, and collect with a token and a four-character code, so the right food goes to the right person.',
       points: ['Customer app: order now or pre-order a pickup slot, then track it live', 'Vendor hub: live queue, pickup verification, sales and rush-hour analytics', 'Real-time sync between customer and vendor, plus loyalty rewards'],
